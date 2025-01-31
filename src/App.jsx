@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 
 function App() {
-  const [workTime, setWorkTime] = useState(25 * 60); // 25 minutos em segundos
+  const [workTime, setWorkTime] = useState(1 * 60); // 25 minutos em segundos
   const [breakTime, setBreakTime] = useState(5 * 60); // 5 minutos em segundos
   const [timeLeft, setTimeLeft] = useState(workTime);
   const [isActive, setIsActive] = useState(false);
   const [isWorkTime, setIsWorkTime] = useState(true);
+
+  // Referência para o elemento de áudio
+  const audioRef = useRef(null);
 
   useEffect(() => {
     let interval = null;
@@ -17,6 +20,11 @@ function App() {
       }, 1000);
     } else if (isActive && timeLeft === 0) {
       clearInterval(interval);
+      // Reproduz o som quando o tempo acaba
+      if (audioRef.current) {
+        audioRef.current.play();
+      }
+      // Alterna entre tempo de trabalho e descanso
       if (isWorkTime) {
         setTimeLeft(breakTime);
         setIsWorkTime(false);
@@ -43,6 +51,11 @@ function App() {
     setIsActive(false);
     setIsWorkTime(true);
     setTimeLeft(workTime);
+    // Para o som ao reiniciar
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
   };
 
   const formatTime = (time) => {
@@ -67,6 +80,8 @@ function App() {
         </button>
         <button onClick={resetTimer}>Reiniciar</button>
       </div>
+      {/* Elemento de áudio */}
+      <audio ref={audioRef} src="/SOMDODESPERTADOR.mp3" />
     </div>
   );
 }
