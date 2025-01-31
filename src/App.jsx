@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 
 function App() {
-  const [workTime, setWorkTime] = useState(1 * 60); // 25 minutos em segundos
+  const [workTime, setWorkTime] = useState(25 * 60); // 25 minutos em segundos
   const [breakTime, setBreakTime] = useState(5 * 60); // 5 minutos em segundos
   const [timeLeft, setTimeLeft] = useState(workTime);
   const [isActive, setIsActive] = useState(false);
